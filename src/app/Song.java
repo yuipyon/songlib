@@ -14,7 +14,12 @@ public class Song {
 	public String getArtist() {return artist;}
 	public String getAlbum() {return album;}
 	public int getYear() {return year;}
-
+	
+	public void setName(String name) {this.name=name;}
+	public void setArtist(String artist) {this.artist=artist;}
+	public void setAlbum(String album) {this.album=album;}
+	public void setYear(int year) {this.year=year;}
+	
 	public String toString() {
 		return name + "," + artist + "," + album + "," + year;
 	}
