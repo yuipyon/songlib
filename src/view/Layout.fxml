@@ -8,9 +8,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller">
+<AnchorPane 
+	maxHeight="-Infinity" 
+	maxWidth="-Infinity" 
+	minHeight="-Infinity" 
+	minWidth="-Infinity" 
+	prefHeight="400.0" 
+	prefWidth="600.0" 
+	xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+	fx:controller="view.Controller">
+	
    <children>
-      <ListView prefHeight="400.0" prefWidth="335.0" />
+      <ListView fx:id="songPlayList" layoutX="14.0" layoutY="17.0" prefHeight="367.0" prefWidth="300.0" />
       <Button fx:id="add_button" layoutX="427.0" layoutY="257.0" mnemonicParsing="false" onAction="#addButtonAction" text="Add Song" />
       <Button fx:id="delete_button" layoutX="421.0" layoutY="331.0" mnemonicParsing="false" text="Delete Song" />
       <Button fx:id="edit_button" layoutX="428.0" layoutY="294.0" mnemonicParsing="false" text="Edit Song" />
@@ -22,7 +31,6 @@
       <Label layoutX="360.0" layoutY="138.0" prefHeight="17.0" prefWidth="37.0" text="Album" />
       <Label layoutX="367.0" layoutY="180.0" text="Year" />
       <TextField fx:id="YearBox" layoutX="414.0" layoutY="176.0" />
-      <ListView layoutX="13.0" layoutY="13.0" prefHeight="375.0" prefWidth="309.0" AnchorPane.topAnchor="13.0" />
       <Text layoutX="414.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Library Options">
          <font>
             <Font name="System Bold" size="13.0" />

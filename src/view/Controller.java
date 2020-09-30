@@ -43,4 +43,15 @@ public class Controller extends ActionEvent {
 		songPlayList = new ListView<Song>(songs);
 		System.out.println(songPlayList);
 	}
+
+	public void start(Stage primaryStage) {
+		songPlayList.getSelectionModel().select(0);
+		songPlayList
+			.getSelectionModel()
+			.selectedIndexProperty();
+		
+		//add.setOnAction((ActionEvent e) -> {addButtonAction())
+		
+		
+	}
 }
