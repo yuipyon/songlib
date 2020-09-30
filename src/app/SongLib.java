@@ -13,7 +13,7 @@ public class SongLib extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		Parent rt = FXMLLoader.load(getClass().getResource("/view/Layout.fxml"));
 		primaryStage.setTitle("Song Library");
-		primaryStage.setScene(new Scene(rt, 747, 400));
+		primaryStage.setScene(new Scene(rt, 600, 400));
 		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
