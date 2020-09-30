@@ -21,6 +21,6 @@ public class Song {
 	public void setYear(int year) {this.year=year;}
 	
 	public String toString() {
-		return name + "-" + artist;
+		return name + " " + "-" + " " + artist;
 	}
 }
