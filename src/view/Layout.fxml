@@ -8,8 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller">
    <children>
-      <ListView prefHeight="400.0" prefWidth="330.0" />
-      <Button fx:id="add_button" layoutX="423.0" layoutY="241.0" mnemonicParsing="false" text="Add" onAction="#addButtonAction"/>
+      <Button fx:id="add_button" layoutX="423.0" layoutY="241.0" mnemonicParsing="false" onAction="#addButtonAction" text="Add" />
       <Button fx:id="delete_button" layoutX="423.0" layoutY="290.0" mnemonicParsing="false" text="Delete" />
       <Button fx:id="edit_button" layoutX="423.0" layoutY="344.0" mnemonicParsing="false" text="Edit" />
       <TextField fx:id="artistBox" layoutX="437.0" layoutY="14.0" />
@@ -20,5 +19,6 @@
       <Label layoutX="387.0" layoutY="113.0" text="Album" />
       <Label layoutX="398.0" layoutY="170.0" text="Year" />
       <TextField fx:id="YearBox" layoutX="437.0" layoutY="166.0" />
+      <ListView fx:id="songPlayList" prefHeight="400.0" prefWidth="345.0" />
    </children>
 </AnchorPane>
