@@ -21,7 +21,7 @@
    <children>
       <ListView fx:id="songPlayList" layoutX="14.0" layoutY="17.0" prefHeight="367.0" prefWidth="300.0" />
       <Button fx:id="add_button" layoutX="427.0" layoutY="257.0" mnemonicParsing="false" onAction="#addButtonAction" text="Add Song" />
-      <Button fx:id="delete_button" layoutX="421.0" layoutY="331.0" mnemonicParsing="false" text="Delete Song" />
+      <Button fx:id="delete_button" layoutX="421.0" layoutY="331.0" mnemonicParsing="false" onAction="#deleteButtonAction" text="Delete Song" />
       <Button fx:id="edit_button" layoutX="428.0" layoutY="294.0" mnemonicParsing="false" text="Edit Song" />
       <TextField fx:id="artistBox" layoutX="414.0" layoutY="52.0" />
       <TextField fx:id="SongBox" layoutX="414.0" layoutY="96.0" />

@@ -24,10 +24,16 @@ public class SongLib extends Application {
 		primaryStage.setScene(new Scene(root, 600, 400));
 		primaryStage.setResizable(false);
 		primaryStage.show();
+		
+		primaryStage.setOnCloseRequest(event -> {
+		    System.out.println("Stage is closing");
+		    // Save file
+		});
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
+		
 	}
 
 }
