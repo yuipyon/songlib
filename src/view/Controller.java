@@ -34,6 +34,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -75,7 +76,7 @@ public class Controller extends ActionEvent {
 	private ObservableList<Song> songs = FXCollections.observableArrayList();
 	private ArrayList<Song> songList = new ArrayList<Song>();
 	
-	public void addButtonAction(ActionEvent event) {
+	private void addAction() {
 		String artist = artistBox.getText();
 		String song = SongBox.getText();
 		String album = AlbumBox.getText();
@@ -109,6 +110,10 @@ public class Controller extends ActionEvent {
 		songPlayList.getSelectionModel().select(position);
 	}
 	
+	public void addButtonAction(ActionEvent event) {
+		addAction();
+	}
+	
 	private boolean checkElements(ArrayList<Song> songs, Song item) {
 		boolean exists = false;
 		for(int i = 0; i<songs.size(); i++) {
@@ -130,11 +135,25 @@ public class Controller extends ActionEvent {
 		}
 		return position;
 	}
+	
 	public void editButtonAction(ActionEvent event) {
-		String artist = artistBox.getText();
-		String song = SongBox.getText();
-		String album = AlbumBox.getText();
-		String year = YearBox.getText();
+		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
+		if (selectedIndex != -1) {
+			Song songToEdit = (Song) songPlayList.getSelectionModel().getSelectedItem();
+			artistBox.setText(songToEdit.getArtist());
+			SongBox.setText(songToEdit.getName());
+			AlbumBox.setText(songToEdit.getAlbum());
+			YearBox.setText(Integer.toString(songToEdit.getYear()));
+		}
+		//Outside of the if statement we can start changing the elements of the thing
+		/*
+		 * First Step: Select the song
+		 * Second Step: Edit the parts you want to edit
+		 * Third Step: Remove the previous part from the array list
+		 * Fourth Step: Add the arraylist element to ListView
+		 */
+		System.out.println(songs.get(selectedIndex));
+			
 	}
 	
 	public void deleteButtonAction(ActionEvent event) {
@@ -165,11 +184,11 @@ public class Controller extends ActionEvent {
 		songPlayList.getSelectionModel().select(0);
 		
 		primaryStage.setOnCloseRequest(event -> {
-		    System.out.println("Stage is closing");
+		    //System.out.println("Stage is closing");
 		    try {
 				FileWriter wr = new FileWriter("user_data/user_data.txt");
 				for(Song song: songList) {
-					wr.write(song.toString());
+					wr.write(song.toString() + "\n");
 				}
 				wr.flush();
 				wr.close();
