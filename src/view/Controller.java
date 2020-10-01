@@ -214,8 +214,6 @@ public class Controller extends ActionEvent {
 				loadSong.setArtist(scan.nextLine());
 				loadSong.setAlbum(scan.nextLine());
 				loadSong.setYear(scan.nextLine());
-				scan.nextLine();
-				scan.nextLine();
 				songList.add(loadSong);
 			}
 		} catch (FileNotFoundException e) {
@@ -239,7 +237,6 @@ public class Controller extends ActionEvent {
 					wr.write(song.getArtist() + "\n");
 					wr.write(song.getAlbum() + "\n");
 					wr.write(song.getYear() + "\n");
-					wr.write("\n\n");
 				}
 			    System.out.println("Saved your library");
 				wr.flush();
