@@ -1,7 +1,4 @@
-/*
- * Actions for the GUI for in here
- */
-
+//Yulin Ni (yn140) and Karun Kanda (kk951)
 package view;
 
 import javafx.event.ActionEvent;
@@ -17,7 +14,6 @@ import java.io.FileWriter;
 import com.sun.glass.ui.Accessible.EventHandler;
 
 import app.Song;
-import app.sortSongName;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -153,11 +149,6 @@ public class Controller extends ActionEvent {
 	}
 	
 	public void start(Stage primaryStage) {
-		songs.add(new Song("Hello", "Adele", "25", 2015)); 
-		songs.add(new Song("Circles", "Mac Miller", "Circles", 2020)); 
-		songs.add(new Song("No Role Models", "J Cole", "2014 Forest Hill Drive", 2014));
-		songs.add(new Song("Acacia", "BUMP OF CHICKEN", "Pokemon GOTCHA!", 2020));
-		
 		Collections.sort(songList, new sortSongName());
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
