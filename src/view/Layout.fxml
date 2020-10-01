@@ -36,7 +36,7 @@
                   <Insets />
                </VBox.margin>
             </TextField>
-            <TextField fx:id="artistBox" promptText="Artist" />
+            <TextField fx:id="ArtistBox" promptText="Artist" />
             <TextField fx:id="AlbumBox" promptText="Album" />
             <TextField fx:id="YearBox" prefHeight="25.0" prefWidth="169.0" promptText="Year" />
          </children>

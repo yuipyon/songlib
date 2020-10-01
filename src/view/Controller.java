@@ -66,8 +66,8 @@ public class Controller extends ActionEvent {
 	 */
 	@FXML ListView songPlayList;
 	@FXML Button edit;
-	@FXML Button add;
-	@FXML Button delete;
+	@FXML Button add_button;
+	@FXML Button delete_button;
 	@FXML TextField ArtistBox;
 	@FXML TextField SongBox;
 	@FXML TextField YearBox;
@@ -87,7 +87,7 @@ public class Controller extends ActionEvent {
 	private ObservableList<Song> songs = FXCollections.observableArrayList();
 	private ArrayList<Song> songList = new ArrayList<Song>();
 	
-	private void addAction() {
+	public void addButtonAction(ActionEvent event) {
 		String artist = ArtistBox.getText();
 		String song = SongBox.getText();
 		String album = AlbumBox.getText();
@@ -118,15 +118,6 @@ public class Controller extends ActionEvent {
 			songPlayList.setItems(songs);
 			songPlayList.getSelectionModel().select(position);
 		}
-		
-		ArtistBox.setText("");
-		SongBox.setText("");
-		AlbumBox.setText("");
-		YearBox.setText("");
-	}
-	
-	public void addButtonAction(ActionEvent event) {
-		addAction();
 	}
 	
 	private boolean checkElements(ArrayList<Song> songs, Song item) {

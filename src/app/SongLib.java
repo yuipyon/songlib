@@ -22,7 +22,7 @@ public class SongLib extends Application {
 		controller.start(primaryStage);
 		
 		primaryStage.setTitle("Song Library");
-		primaryStage.setScene(new Scene(root, 650, 500));
+		primaryStage.setScene(new Scene(root, 621, 424));
 		primaryStage.setResizable(false);
 		primaryStage.show();
 		
