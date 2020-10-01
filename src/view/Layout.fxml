@@ -17,14 +17,14 @@
       <Button fx:id="add_button" layoutX="413.0" layoutY="226.0" mnemonicParsing="false" onAction="#addButtonAction" text="Add Song" />
       <Button fx:id="delete_button" layoutX="100.0" layoutY="393.0" mnemonicParsing="false" onAction="#deleteButtonAction" text="Delete Selected Song" />
       <Button fx:id="edit_button" layoutX="496.0" layoutY="226.0" mnemonicParsing="false" text="Edit Song" />
-      <TextField fx:id="artistBox" layoutX="414.0" layoutY="94.0" />
       <TextField fx:id="SongBox" layoutX="414.0" layoutY="53.0" />
+      <TextField fx:id="artistBox" layoutX="414.0" layoutY="94.0" />
       <TextField fx:id="AlbumBox" layoutX="414.0" layoutY="135.0" />
-      <Label layoutX="366.0" layoutY="98.0" text="Artist" />
+      <TextField fx:id="YearBox" layoutX="413.0" layoutY="175.0" />
       <Label layoutX="367.0" layoutY="56.0" text="Song" />
+      <Label layoutX="366.0" layoutY="98.0" text="Artist" />
       <Label layoutX="364.0" layoutY="138.0" prefHeight="17.0" prefWidth="37.0" text="Album" />
       <Label layoutX="368.0" layoutY="180.0" text="Year" />
-      <TextField fx:id="YearBox" layoutX="413.0" layoutY="175.0" />
       <Text layoutX="342.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Options:">
          <font>
             <Font size="13.0" />

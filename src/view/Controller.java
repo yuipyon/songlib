@@ -45,7 +45,10 @@ public class Controller extends ActionEvent {
 	{  
 	    public int compare(Song a, Song b) 
 	    { 
-	        return a.getName().compareTo(b.getName()); 
+	        if (a.getName().compareToIgnoreCase(b.getName()) == 0) {
+	        	return a.getArtist().compareToIgnoreCase(b.getArtist());
+	        }
+	    	return a.getName().compareToIgnoreCase(b.getName()); 
 	    } 
 	} 
 	  
@@ -77,44 +80,41 @@ public class Controller extends ActionEvent {
 		String song = SongBox.getText();
 		String album = AlbumBox.getText();
 		String year = YearBox.getText();
+		
+		Song new_song = new Song(song, artist, album, year);
+		boolean exists = checkElements(songList, new_song);
+		
 		if(artist.equals("") || song.equals("")) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Invalid Input");
 			alert.setHeaderText("No input for song and/or artist");
-			alert.setContentText("Please provide atleast a song and artist name.");
+			alert.setContentText("Please provide at least a song and artist name.");
 			alert.showAndWait();
-			add.setDisable(true);
 		}
-		if(year.equals("")) {
-			year = "0";
-		}
-		Song new_song = new Song(song, artist, album, Integer.parseInt(year));
-		boolean exists = checkElements(songList, new_song);
-		if(exists == true) {
+		else if(exists == true) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Duplicate Entry");
-			alert.setHeaderText("This input you gave is the same as a previous one");
+			alert.setHeaderText("This song already exists in your library");
 			alert.setContentText("Please input another song");
 			alert.showAndWait();
-			add.setDisable(true);
 		}
-		songList.add(new_song);
-		Collections.sort(songList, new sortSongName());
-		int position = findIndex(songList, new_song);
-		songs = FXCollections.observableList(songList);
-		songPlayList.setItems(songs);
-		songPlayList.getSelectionModel().select(position);
+		else {
+			songList.add(new_song);
+			Collections.sort(songList, new sortSongName());
+			int position = findIndex(songList, new_song);
+			songs = FXCollections.observableList(songList);
+			songPlayList.setItems(songs);
+			songPlayList.getSelectionModel().select(position);
+		}
 	}
 	
 	private boolean checkElements(ArrayList<Song> songs, Song item) {
-		boolean exists = false;
 		for(int i = 0; i<songs.size(); i++) {
-			if((item.getArtist().contains(songs.get(i).getArtist())) && (item.getName().contains(songs.get(i).getName()))) {
-				exists = true;
-				break;
+			if((item.getArtist().compareToIgnoreCase(songs.get(i).getArtist()) == 0) && (item.getName().compareToIgnoreCase(songs.get(i).getName()) == 0)) {
+				return true;
 			} 
 		}
-		return exists;
+		return false;
 	}
 	
 	private int findIndex(ArrayList<Song> songs, Song item) {
@@ -151,13 +151,14 @@ public class Controller extends ActionEvent {
 	}
 	
 	public void start(Stage primaryStage) {
-		Collections.sort(songList, new sortSongName());
+		//here, we should read saved song list text file, load it into songList, and display it in songPlayList
+		//don't need to alphabetically sort here because text file should ideally already be sorted (went through sorting process in add/edit method)
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
 		
 		primaryStage.setOnCloseRequest(event -> {
-		    System.out.println("Stage is closing");
+		    System.out.println("Saved your library");
 		    try {
 				FileWriter wr = new FileWriter("user_data/user_data.txt");
 				for(Song song: songList) {
