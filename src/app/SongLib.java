@@ -1,3 +1,4 @@
+//Yulin Ni (yn140) and Karun Kanda (kk951)
 package app;
 
 import view.Controller;
@@ -21,7 +22,7 @@ public class SongLib extends Application {
 		controller.start(primaryStage);
 		
 		primaryStage.setTitle("Song Library");
-		primaryStage.setScene(new Scene(root, 600, 400));
+		primaryStage.setScene(new Scene(root, 650, 500));
 		primaryStage.setResizable(false);
 		primaryStage.show();
 		
