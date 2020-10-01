@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import com.sun.glass.ui.Accessible.EventHandler;
 
@@ -132,6 +133,7 @@ public class Controller extends ActionEvent {
 		String album = AlbumBox.getText();
 		String year = YearBox.getText();
 	}
+	
 	public void deleteButtonAction(ActionEvent event) {
 		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
@@ -153,5 +155,20 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
+		
+		primaryStage.setOnCloseRequest(event -> {
+		    System.out.println("Stage is closing");
+		    try {
+				FileWriter wr = new FileWriter("user_data/user_data.txt");
+				for(Song song: songList) {
+					wr.write(song.toString());
+				}
+				wr.flush();
+				wr.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		    
+		});
 	}			
 }
