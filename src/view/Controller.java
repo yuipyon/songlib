@@ -36,7 +36,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class Controller extends ActionEvent {
@@ -70,6 +72,7 @@ public class Controller extends ActionEvent {
 	@FXML TextField SongBox;
 	@FXML TextField YearBox;
 	@FXML TextField AlbumBox;
+	@FXML TextFlow SongDetails;
 	
 	/*
 	 * 1. ObservableList to add items to ListView which will take a 
@@ -80,7 +83,7 @@ public class Controller extends ActionEvent {
 	private ObservableList<Song> songs = FXCollections.observableArrayList();
 	private ArrayList<Song> songList = new ArrayList<Song>();
 	
-	public void addButtonAction(ActionEvent event) {
+	private void addAction() {
 		String artist = artistBox.getText();
 		String song = SongBox.getText();
 		String album = AlbumBox.getText();
@@ -111,6 +114,15 @@ public class Controller extends ActionEvent {
 			songPlayList.setItems(songs);
 			songPlayList.getSelectionModel().select(position);
 		}
+		
+		artistBox.setText("");
+		SongBox.setText("");
+		AlbumBox.setText("");
+		YearBox.setText("");
+	}
+	
+	public void addButtonAction(ActionEvent event) {
+		addAction();
 	}
 	
 	private boolean checkElements(ArrayList<Song> songs, Song item) {
@@ -132,11 +144,27 @@ public class Controller extends ActionEvent {
 		}
 		return position;
 	}
+	
 	public void editButtonAction(ActionEvent event) {
-		String artist = artistBox.getText();
-		String song = SongBox.getText();
-		String album = AlbumBox.getText();
-		String year = YearBox.getText();
+		
+		//Outside of the if statement we can start changing the elements of the thing
+		/*
+		 * First Step: Select the song
+		 * Second Step: Edit the parts you want to edit
+		 * Third Step: Remove the previous part from the array list
+		 * Fourth Step: Add the arraylist element to ListView
+		 */
+		System.out.println("Clicked");
+		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
+		if (selectedIndex != -1) {
+			Song song = (Song) songPlayList.getSelectionModel().getSelectedItem();
+			artistBox.setText(song.getArtist());
+			SongBox.setText(song.getName());
+			AlbumBox.setText(song.getAlbum());
+			YearBox.setText(song.getYear());
+		}
+		
+			
 	}
 	
 	public void deleteButtonAction(ActionEvent event) {
@@ -152,6 +180,23 @@ public class Controller extends ActionEvent {
 			songs.remove(selectedIndex);		
 			//selects the next song in the list
 			songPlayList.getSelectionModel().select(newSelectedIndex);
+		}
+	}
+	
+	public void selectButtonAction(ActionEvent event) {
+		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
+		if (selectedIndex != -1) {
+			Song song = (Song) songPlayList.getSelectionModel().getSelectedItem();
+			Text details = new Text("Details for" + " " + song.getName() + ":" + "\n");
+			SongDetails.getChildren().add(details);
+			Text songName = new Text("Song Name: " + song.getName() + "\n");
+			SongDetails.getChildren().add(songName);
+			Text artist = new Text("Artist Name: " + song.getArtist() + "\n");
+			SongDetails.getChildren().add(artist);
+			Text album = new Text("Album Name: " + song.getAlbum() + "\n");
+			SongDetails.getChildren().add(album);
+			Text year = new Text("Year: " + song.getYear() + "\n");
+			SongDetails.getChildren().add(year);
 		}
 	}
 	
@@ -179,6 +224,12 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
+		
+		/*
+		Text text1 = new Text("Something");
+		Text text2 = new Text("Something Else");
+		SongDetails.getChildren().add(text1);
+		*/
 		
 		primaryStage.setOnCloseRequest(event -> {
 		    try {
