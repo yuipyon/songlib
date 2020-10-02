@@ -30,6 +30,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -86,6 +88,7 @@ public class Controller extends ActionEvent {
 	 */
 	private ObservableList<Song> songs = FXCollections.observableArrayList();
 	private ArrayList<Song> songList = new ArrayList<Song>();
+	ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
 	
 	public void addButtonAction(ActionEvent event) {
 		String artist = ArtistBox.getText();
@@ -111,12 +114,16 @@ public class Controller extends ActionEvent {
 			alert.showAndWait();
 		}
 		else {
-			songList.add(new_song);
-			Collections.sort(songList, new sortSongName());
-			int position = findIndex(songList, new_song);
-			songs = FXCollections.observableList(songList);
-			songPlayList.setItems(songs);
-			songPlayList.getSelectionModel().select(position);
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to add " + new_song.getName() + " by " + new_song.getArtist() + " to your library?", yes, ButtonType.CANCEL);
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == yes) {
+				songList.add(new_song);
+				Collections.sort(songList, new sortSongName());
+				int position = findIndex(songList, new_song);
+				songs = FXCollections.observableList(songList);
+				songPlayList.setItems(songs);
+				songPlayList.getSelectionModel().select(position);
+			}
 		}
 	}
 	
@@ -142,6 +149,13 @@ public class Controller extends ActionEvent {
 	
 	public void editButtonAction(ActionEvent event) {
 		
+		/*
+		 * Alert alert = new Alert(AlertType.CONFIRMATION,
+		 * "Are you sure you want to modify " + (insert song name) + " by " + (artist) +
+		 * " from your library?", yes, ButtonType.CANCEL); Optional<ButtonType> result =
+		 * alert.showAndWait(); if (result.get() == yes) {}
+		 */
+		
 		//Outside of the if statement we can start changing the elements of the thing
 		/*
 		 * First Step: Select the song
@@ -166,15 +180,17 @@ public class Controller extends ActionEvent {
 		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Song songToRemove = (Song) songPlayList.getSelectionModel().getSelectedItem();
-			int newSelectedIndex = 
-				(selectedIndex == songPlayList.getItems().size() - 1)
-					? selectedIndex - 1
-					: selectedIndex;
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to remove " + songToRemove.getName() + " by " + songToRemove.getArtist() + " from your library?", yes, ButtonType.CANCEL);
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == yes) {
+				int newSelectedIndex = 
+						(selectedIndex == songPlayList.getItems().size() - 1)
+							? selectedIndex - 1
+							: selectedIndex;
 
-			//removes song from songs arraylist
-			songs.remove(selectedIndex);		
-			//selects the next song in the list
-			songPlayList.getSelectionModel().select(newSelectedIndex);
+					songs.remove(selectedIndex);		
+					songPlayList.getSelectionModel().select(newSelectedIndex);
+			}
 		}
 	}
 	
@@ -211,14 +227,7 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
-		
-		/*
-		Text text1 = new Text("Something");
-		Text text2 = new Text("Something Else");
-		SongDetails.getChildren().add(text1);
-		*/
-		
-		//random comment for checking git thing - delete if u see this
+
 		primaryStage.setOnCloseRequest(event -> {
 		    try {
 				FileWriter wr = new FileWriter("user_data/user_data.txt");
