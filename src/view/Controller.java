@@ -325,15 +325,6 @@ public class Controller extends ActionEvent {
 			SDYearBox.setText(song.getYear());
 		}
 	}
-	
-	private void showSongDetails(Stage mainstage) {
-		Song selected = (Song) songPlayList.getSelectionModel().getSelectedItem();
-		SDArtistBox.setText(selected.getArtist());
-		SDSongBox.setText(selected.getName());
-		SDAlbumBox.setText(selected.getAlbum());
-		SDYearBox.setText(selected.getYear());
-		
-	}
 
 	/*
 	 * -----------------------------------------------------------------
@@ -364,10 +355,6 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
-		songPlayList
-		.getSelectionModel()
-		.selectedIndexProperty()
-		.addListener(obs, oldVal,newVal) -> showSongDetails(primaryStage);
 
 		primaryStage.setOnCloseRequest(event -> {
 		    try {
