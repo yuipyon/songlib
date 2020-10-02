@@ -1,4 +1,6 @@
-//Yulin Ni (yn140) and Karun Kanda (kk951)
+/*
+ * Authors: Yulin Ni (yn140) and Karun Kanda (kk951)
+ */
 package app;
 
 public class Song {
@@ -21,7 +23,32 @@ public class Song {
 	public void setAlbum(String album) {this.album=album;}
 	public void setYear(String year) {this.year=year;}
 	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) {
+	         return false;
+	    }
+		
+		if(this == o) {
+	         return true;
+	    }
+		
+		if(getClass() != o.getClass()) {
+			return false;
+		}
+		
+		Song song = (Song)o;
+		return name.equals(song.name) && artist.equals(song.artist);
+	}
+		
+	public void edit(String name, String artist, String album, String year) {
+		this.artist = artist;
+		this.name = name;
+		this.album = album;
+		this.year = year;
+	}
+	
 	public String toString() {
-		return name + " " + "-" + " " + artist;
+		return artist + " " + "-" + " " + name;
 	}
 }

@@ -8,6 +8,5 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX11"/>
-	<classpathentry kind="lib" path="C:/Users/pocke/Downloads/School/Software Meth/json-simple-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

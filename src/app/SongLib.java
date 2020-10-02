@@ -1,4 +1,6 @@
-//Yulin Ni (yn140) and Karun Kanda (kk951)
+/*
+ * Authors: Yulin Ni (yn140) and Karun Kanda (kk951)
+ */
 package app;
 
 import view.Controller;
@@ -8,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import view.Controller;
 
 public class SongLib extends Application {
 
@@ -34,4 +37,3 @@ public class SongLib extends Application {
 	}
 
 }
-
