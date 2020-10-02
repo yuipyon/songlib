@@ -191,7 +191,7 @@ public class Controller extends ActionEvent {
 		else {
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to edit " + beingEdited.getName() + " by " + beingEdited.getArtist() + "?", yes, ButtonType.CANCEL);
 	        Optional<ButtonType> result = alert.showAndWait();
-	        if (result.get() == yes) {
+	        if (result.get() == yes) {	
 		        replaceDetails(songList, newSong);
 	        }
 		}
@@ -206,19 +206,27 @@ public class Controller extends ActionEvent {
 		private void replaceDetails(ArrayList<Song> songs1, Song item) {
 			boolean dup = findDuplicate(songList, item);
 			if(dup == true) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Duplicate Entry");
-				alert.setHeaderText("This song already exists in your library");
-				alert.setContentText("Please input another song");
-				alert.showAndWait();
-			} else {
-				songList.remove(songPlayList.getSelectionModel().getSelectedIndex());
-				songList.add(item);
-				Collections.sort(songList, new sortSongName());
-				int position = findIndex(songList, item);
-				songs = FXCollections.observableList(songList);
-				songPlayList.setItems(songs);
-				songPlayList.getSelectionModel().select(position);
+                boolean dupe = findDuplicatePt2(songList, item);
+                System.out.println(dupe);
+                if(dupe == true) {
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Duplicate Entry");
+                    alert.setHeaderText("This song already exists in your library");
+                    alert.setContentText("Please input another song");
+                    alert.showAndWait();
+                } else {
+                    songList.remove(songPlayList.getSelectionModel().getSelectedIndex());
+                    songList.add(item);
+                    Collections.sort(songList, new sortSongName());
+                    int position = findIndex(songList, item);
+                    songs = FXCollections.observableList(songList);
+                    songPlayList.setItems(songs);
+                    songPlayList.getSelectionModel().select(position);
+                    SDArtistBox.setText("");
+                    SDSongBox.setText("");
+                    SDAlbumBox.setText("");
+                    SDYearBox.setText("");
+                }
 			}
 		}
 		
@@ -226,16 +234,24 @@ public class Controller extends ActionEvent {
 		private boolean findDuplicate(ArrayList<Song> songs, Song item) {
 			boolean position = false;
 			for(int i = 0; i<songs.size(); i++) {
-				if((item.getArtist().compareToIgnoreCase(songs.get(i).getArtist()) == 0) &&
-					(item.getName().compareToIgnoreCase(songs.get(i).getName()) == 0) &&
-					(item.getAlbum().compareToIgnoreCase(songs.get(i).getAlbum()) == 0) &&
-					(item.getYear().compareToIgnoreCase(songs.get(i).getYear()) == 0)){
+				if(item.equals(songs.get(i))){
 						position = true;
 						return position;
 				} 
 			}
 			return position;
 		}
+		
+		private boolean findDuplicatePt2(ArrayList<Song> songs, Song item) {
+            boolean position = false;
+            for(int i = 0; i<songs.size(); i++) {
+                if(item.equalsPt2(songs.get(i))){
+                        position = true;
+                        return position;
+                } 
+            }
+            return position;
+        }
 	
 	/*
 	 * ---------------------------
@@ -259,10 +275,18 @@ public class Controller extends ActionEvent {
 					songs.remove(selectedIndex);		
 					songPlayList.getSelectionModel().select(newSelectedIndex);
 					Song newDisplay = (Song) songPlayList.getSelectionModel().getSelectedItem();
-                    SDArtistBox.setText(newDisplay.getArtist());
-                    SDSongBox.setText(newDisplay.getName());
-                    SDAlbumBox.setText(newDisplay.getAlbum());
-                    SDYearBox.setText(newDisplay.getYear());
+					if (selectedIndex != 0) {
+	                    SDArtistBox.setText(newDisplay.getArtist());
+	                    SDSongBox.setText(newDisplay.getName());
+	                    SDAlbumBox.setText(newDisplay.getAlbum());
+	                    SDYearBox.setText(newDisplay.getYear());
+					}
+					else {
+						SDArtistBox.setText("");
+						SDSongBox.setText("");
+						SDAlbumBox.setText("");
+						SDYearBox.setText("");
+					}
 			}
 		}
 	}
@@ -283,6 +307,15 @@ public class Controller extends ActionEvent {
 			SDAlbumBox.setText(song.getAlbum());
 			SDYearBox.setText(song.getYear());
 		}
+	}
+	
+	private void showSongDetails(Stage mainstage) {
+		Song selected = (Song) songPlayList.getSelectionModel().getSelectedItem();
+		SDArtistBox.setText(selected.getArtist());
+		SDSongBox.setText(selected.getName());
+		SDAlbumBox.setText(selected.getAlbum());
+		SDYearBox.setText(selected.getYear());
+		
 	}
 
 	/*
@@ -314,6 +347,10 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
+		//songPlayList
+		//.getSelectionModel()
+		//.selectedIndexProperty()
+		//.addListener(obs, oldVal,newVal) -> showSongDetails(primaryStage);
 
 		primaryStage.setOnCloseRequest(event -> {
 		    try {
