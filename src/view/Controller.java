@@ -1,4 +1,6 @@
-//Yulin Ni (yn140) and Karun Kanda (kk951)
+/*
+ * Authors: Yulin Ni (yn140) and Karun Kanda (kk951)
+ */
 package view;
 
 import javafx.event.ActionEvent;
@@ -89,6 +91,7 @@ public class Controller extends ActionEvent {
 	private ObservableList<Song> songs = FXCollections.observableArrayList();
 	private ArrayList<Song> songList = new ArrayList<Song>();
 	ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+	Song temp; //placeholder value
 	
 	public void addButtonAction(ActionEvent event) {
 		String artist = ArtistBox.getText();
@@ -147,33 +150,48 @@ public class Controller extends ActionEvent {
 		return position;
 	}
 	
-	public void editButtonAction(ActionEvent event) {
-		
-		/*
-		 * Alert alert = new Alert(AlertType.CONFIRMATION,
-		 * "Are you sure you want to modify " + (insert song name) + " by " + (artist) +
-		 * " from your library?", yes, ButtonType.CANCEL); Optional<ButtonType> result =
-		 * alert.showAndWait(); if (result.get() == yes) {}
-		 */
-		
-		//Outside of the if statement we can start changing the elements of the thing
-		/*
-		 * First Step: Select the song
-		 * Second Step: Edit the parts you want to edit
-		 * Third Step: Remove the previous part from the array list
-		 * Fourth Step: Add the arraylist element to ListView
-		 */
-		System.out.println("Clicked");
-		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
-		if (selectedIndex != -1) {
-			Song song = (Song) songPlayList.getSelectionModel().getSelectedItem();
-			ArtistBox.setText(song.getArtist());
-			SongBox.setText(song.getName());
-			AlbumBox.setText(song.getAlbum());
-			YearBox.setText(song.getYear());
+	private boolean findDuplicate(ArrayList<Song> songs, Song item) {
+		boolean position = false;
+		for(int i = 0; i<songs.size(); i++) {
+			if((item.getArtist().compareToIgnoreCase(songs.get(i).getArtist()) == 0) && (item.getName().compareToIgnoreCase(songs.get(i).getName()) == 0)){
+				position = true;
+				return position;
+			} 
 		}
-		
-			
+		return position;
+	}
+	
+	private void replaceDetails(ArrayList<Song> songs1, Song item) {
+		for(int i = 0; i<songs1.size(); i++) {
+			if((item.getArtist().compareToIgnoreCase(songs.get(i).getArtist()) == 0) || (item.getName().compareToIgnoreCase(songs.get(i).getName()) == 0)){
+				songList.remove(songs1.get(i));
+				boolean dup = findDuplicate(songList, item);
+				if(dup == true) {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Duplicate Entry");
+					alert.setHeaderText("This song already exists in your library");
+					alert.setContentText("Please input another song");
+					alert.showAndWait();
+					break;
+				} else {
+					songList.add(item);
+					Collections.sort(songList, new sortSongName());
+					songs = FXCollections.observableList(songList);
+					songPlayList.setItems(songs);
+					break;
+				}
+			} 
+			break;
+		}
+	}
+	
+	public void editButtonAction(ActionEvent event) {
+		String artist = SDArtistBox.getText();
+		String song = SDSongBox.getText();
+		String album = SDAlbumBox.getText();
+		String year = SDYearBox.getText();
+		Song newSong = new Song(song, artist, album, year);
+		replaceDetails(songList, newSong);
 	}
 	
 	public void deleteButtonAction(ActionEvent event) {

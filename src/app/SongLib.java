@@ -1,4 +1,6 @@
-//Yulin Ni (yn140) and Karun Kanda (kk951)
+/*
+ * Authors: Yulin Ni (yn140) and Karun Kanda (kk951)
+ */
 package app;
 
 import view.Controller;

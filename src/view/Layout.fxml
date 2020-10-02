@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Group members: Yulin Ni (yn140) and Karun Kanda (kk951) -->
+<!-- 
+
+Authors: Yulin Ni (yn140) and Karun Kanda (kk951)
+
+-->
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -61,5 +65,6 @@
       </VBox>
       <Button fx:id="select" layoutX="177.0" layoutY="385.0" mnemonicParsing="false" onAction="#selectButtonAction" text="View Song Details" />
       <Button fx:id="edit_button" layoutX="354.0" layoutY="111.0" mnemonicParsing="false" onAction="#editButtonAction" prefHeight="25.0" prefWidth="76.0" text="Edit Song" />
+      <Text layoutX="27.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Song Playlist" textAlignment="CENTER" wrappingWidth="265.583101272583" />
    </children>
 </AnchorPane>
