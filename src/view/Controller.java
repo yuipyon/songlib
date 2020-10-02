@@ -105,7 +105,7 @@ public class Controller extends ActionEvent {
 		Song new_song = new Song(song, artist, album, year);
 		boolean exists = checkElements(songList, new_song);
 		
-		if(artist.equals("") || song.equals("")) {
+		if(artist.isBlank() || song.isBlank()) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Invalid Input");
 			alert.setHeaderText("No input for song and/or artist");
@@ -167,6 +167,11 @@ public class Controller extends ActionEvent {
 		return position;
 	}
 	
+	public static boolean isBlank(String s)
+	{
+	    return (s == null) || (s.trim().length() == 0);
+	}
+	
 	/*
 	 * --------------------------------------------------
 	 * editButtonAction Method
@@ -181,7 +186,7 @@ public class Controller extends ActionEvent {
         String album = SDAlbumBox.getText();
         String year = SDYearBox.getText();
         Song newSong = new Song(song, artist, album, year);
-		if(newSong.getName().equals("") || newSong.getArtist().equals("")) {
+		if(newSong.getName().isBlank() || newSong.getArtist().isBlank()) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Error");
 			alert.setHeaderText("Invalid action");
@@ -207,7 +212,6 @@ public class Controller extends ActionEvent {
 			boolean dup = findDuplicate(songList, item);
 			if(dup == true) {
 				boolean dupe = findDuplicatePt2(songList, item);
-				System.out.println(dupe);
 				if(dupe == true) {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Duplicate Entry");
@@ -360,10 +364,10 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
-		//songPlayList
-		//.getSelectionModel()
-		//.selectedIndexProperty()
-		//.addListener(obs, oldVal,newVal) -> showSongDetails(primaryStage);
+		songPlayList
+		.getSelectionModel()
+		.selectedIndexProperty()
+		.addListener(obs, oldVal,newVal) -> showSongDetails(primaryStage);
 
 		primaryStage.setOnCloseRequest(event -> {
 		    try {
