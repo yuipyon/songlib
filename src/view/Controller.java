@@ -146,12 +146,16 @@ public class Controller extends ActionEvent {
 				songs = FXCollections.observableList(songList);
 				songPlayList.setItems(songs);
 				songPlayList.getSelectionModel().select(position);
+				ArtistBox.setText("");
+				SongBox.setText("");
+				AlbumBox.setText("");
+				YearBox.setText("");
+				SDArtistBox.setText(new_song.getArtist());
+		        SDSongBox.setText(new_song.getName());
+		        SDAlbumBox.setText(new_song.getAlbum());
+		        SDYearBox.setText(new_song.getYear());
 			}
 		}
-		ArtistBox.setText("");
-		SongBox.setText("");
-		AlbumBox.setText("");
-		YearBox.setText("");
 	}
 	
 	/*
@@ -188,17 +192,27 @@ public class Controller extends ActionEvent {
 	 * --------------------------------------------------
 	 */
 	public void editButtonAction(ActionEvent event) {
-		String artist = SDArtistBox.getText();
-		String song = SDSongBox.getText();
-		String album = SDAlbumBox.getText();
-		String year = SDYearBox.getText();
-		Song newSong = new Song(song, artist, album, year);
-		replaceDetails(songList, newSong);
-		SDArtistBox.setText("");
-		SDSongBox.setText("");
-		SDAlbumBox.setText("");
-		SDYearBox.setText("");
-	}
+        Song beingEdited = (Song) songPlayList.getSelectionModel().getSelectedItem();
+        String artist = SDArtistBox.getText();
+        String song = SDSongBox.getText();
+        String album = SDAlbumBox.getText();
+        String year = SDYearBox.getText();
+        Song newSong = new Song(song, artist, album, year);
+		if(newSong.getName().equals("") || newSong.getArtist().equals("")) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Error");
+			alert.setHeaderText("Invalid action");
+			alert.setContentText("Please include either the song title or artist name");
+			alert.showAndWait();
+		}
+		else {
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to edit " + beingEdited.getName() + " by " + beingEdited.getArtist() + "?", yes, ButtonType.CANCEL);
+	        Optional<ButtonType> result = alert.showAndWait();
+	        if (result.get() == yes) {
+		        replaceDetails(songList, newSong);
+	        }
+		}
+    }
 
 	
 	/*
@@ -207,47 +221,38 @@ public class Controller extends ActionEvent {
 		
      /* The replaceDetails method is to find the song that you need to replace, delete that individual song and replace it with the new detail that the user chooses to insert.*/
 		private void replaceDetails(ArrayList<Song> songs1, Song item) {
-			for(int i = 0; i<songs1.size(); i++) {
-				if((item.getArtist().compareToIgnoreCase(songs1.get(i).getArtist()) == 0) || (item.getName().compareToIgnoreCase(songs1.get(i).getName()) == 0)){
-					songList = deleteEntry(songList, (Song) songPlayList.getSelectionModel().getSelectedItem());
-					boolean dup = findDuplicate(songList, item);
-					if(dup == true) {
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Duplicate Entry");
-						alert.setHeaderText("This song already exists in your library");
-						alert.setContentText("Please input another song");
-						alert.showAndWait();
-						break;
-					} else {
-						songList.add(item);
-						Collections.sort(songList, new sortSongName());
-						songs = FXCollections.observableList(songList);
-						songPlayList.setItems(songs);
-						break;
-					}
-				} 
-				
+			boolean dup = findDuplicate(songList, item);
+			if(dup == true) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Duplicate Entry");
+				alert.setHeaderText("This song already exists in your library");
+				alert.setContentText("Please input another song");
+				alert.showAndWait();
+			} else {
+				songList.remove(songPlayList.getSelectionModel().getSelectedIndex());
+				songList.add(item);
+				Collections.sort(songList, new sortSongName());
+				int position = findIndex(songList, item);
+				songs = FXCollections.observableList(songList);
+				songPlayList.setItems(songs);
+				songPlayList.getSelectionModel().select(position);
+		        SDArtistBox.setText("");
+		        SDSongBox.setText("");
+		        SDAlbumBox.setText("");
+		        SDYearBox.setText("");
 			}
-		}
-		
-		private ArrayList<Song> deleteEntry(ArrayList<Song> songs, Song item) {
-			// if song matches the selected on then delete it
-			for(int i = 0; i<songs.size(); i++) {
-				if(songs.get(i).equals(item)){
-					songs.remove(i);
-					break;
-				} 
-			}
-			return songs;
 		}
 		
 	 /* The findDuplicate Method purpose is to find a duplicate song and return true if found and return false if there isn't a duplicate song. */
 		private boolean findDuplicate(ArrayList<Song> songs, Song item) {
 			boolean position = false;
 			for(int i = 0; i<songs.size(); i++) {
-				if((item.getArtist().compareToIgnoreCase(songs.get(i).getArtist()) == 0) && (item.getName().compareToIgnoreCase(songs.get(i).getName()) == 0)){
-					position = true;
-					return position;
+				if((item.getArtist().compareToIgnoreCase(songs.get(i).getArtist()) == 0) &&
+					(item.getName().compareToIgnoreCase(songs.get(i).getName()) == 0) &&
+					(item.getAlbum().compareToIgnoreCase(songs.get(i).getAlbum()) == 0) &&
+					(item.getYear().compareToIgnoreCase(songs.get(i).getYear()) == 0)){
+						position = true;
+						return position;
 				} 
 			}
 			return position;
@@ -274,6 +279,11 @@ public class Controller extends ActionEvent {
 
 					songs.remove(selectedIndex);		
 					songPlayList.getSelectionModel().select(newSelectedIndex);
+					Song newDisplay = (Song) songPlayList.getSelectionModel().getSelectedItem();
+                    SDArtistBox.setText(newDisplay.getArtist());
+                    SDSongBox.setText(newDisplay.getName());
+                    SDAlbumBox.setText(newDisplay.getAlbum());
+                    SDYearBox.setText(newDisplay.getYear());
 			}
 		}
 	}
