@@ -191,7 +191,7 @@ public class Controller extends ActionEvent {
 		else {
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to edit " + beingEdited.getName() + " by " + beingEdited.getArtist() + "?", yes, ButtonType.CANCEL);
 	        Optional<ButtonType> result = alert.showAndWait();
-	        if (result.get() == yes) {	
+	        if (result.get() == yes) {
 		        replaceDetails(songList, newSong);
 	        }
 		}
@@ -206,27 +206,39 @@ public class Controller extends ActionEvent {
 		private void replaceDetails(ArrayList<Song> songs1, Song item) {
 			boolean dup = findDuplicate(songList, item);
 			if(dup == true) {
-                boolean dupe = findDuplicatePt2(songList, item);
-                System.out.println(dupe);
-                if(dupe == true) {
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("Duplicate Entry");
-                    alert.setHeaderText("This song already exists in your library");
-                    alert.setContentText("Please input another song");
-                    alert.showAndWait();
-                } else {
-                    songList.remove(songPlayList.getSelectionModel().getSelectedIndex());
-                    songList.add(item);
-                    Collections.sort(songList, new sortSongName());
-                    int position = findIndex(songList, item);
-                    songs = FXCollections.observableList(songList);
-                    songPlayList.setItems(songs);
-                    songPlayList.getSelectionModel().select(position);
-                    SDArtistBox.setText("");
-                    SDSongBox.setText("");
-                    SDAlbumBox.setText("");
-                    SDYearBox.setText("");
-                }
+				boolean dupe = findDuplicatePt2(songList, item);
+				System.out.println(dupe);
+				if(dupe == true) {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Duplicate Entry");
+					alert.setHeaderText("This song already exists in your library");
+					alert.setContentText("Please input another song");
+					alert.showAndWait();
+				} else {
+					songList.remove(songPlayList.getSelectionModel().getSelectedIndex());
+					songList.add(item);
+					Collections.sort(songList, new sortSongName());
+					int position = findIndex(songList, item);
+					songs = FXCollections.observableList(songList);
+					songPlayList.setItems(songs);
+					songPlayList.getSelectionModel().select(position);
+			        SDArtistBox.setText("");
+			        SDSongBox.setText("");
+			        SDAlbumBox.setText("");
+			        SDYearBox.setText("");
+				}
+			} else {
+				songList.remove(songPlayList.getSelectionModel().getSelectedIndex());
+				songList.add(item);
+				Collections.sort(songList, new sortSongName());
+				int position = findIndex(songList, item);
+				songs = FXCollections.observableList(songList);
+				songPlayList.setItems(songs);
+				songPlayList.getSelectionModel().select(position);
+		        SDArtistBox.setText("");
+		        SDSongBox.setText("");
+		        SDAlbumBox.setText("");
+		        SDYearBox.setText("");
 			}
 		}
 		
@@ -235,6 +247,18 @@ public class Controller extends ActionEvent {
 			boolean position = false;
 			for(int i = 0; i<songs.size(); i++) {
 				if(item.equals(songs.get(i))){
+						position = true;
+						return position;
+				} 
+			}
+			return position;
+		}
+		
+	 /* The findDuplicatePt2 Method purpose is to find a duplicate song and return true if found and return false if there isn't a duplicate song. */
+		private boolean findDuplicatePt2(ArrayList<Song> songs, Song item) {
+			boolean position = false;
+			for(int i = 0; i<songs.size(); i++) {
+				if(item.equalsPt2(songs.get(i))){
 						position = true;
 						return position;
 				} 

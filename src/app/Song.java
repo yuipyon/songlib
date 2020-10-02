@@ -38,39 +38,39 @@ public class Song {
 	public void setYear(String year) {this.year=year;}
 	
 	@Override
-    public boolean equals(Object o) {
-        if(o == null) {
-             return false;
-        }
-        
-        if(this == o) {
-             return true;
-        }
-        
-        if(getClass() != o.getClass()) {
-            return false;
-        }
-        
-        Song song = (Song)o;
-        return (name.equals(song.name) && artist.equals(song.artist));
-    }
+	public boolean equals(Object o) {
+		if(o == null) {
+	         return false;
+	    }
+		
+		if(this == o) {
+	         return true;
+	    }
+		
+		if(getClass() != o.getClass()) {
+			return false;
+		}
+		
+		Song song = (Song)o;
+		return name.equals(song.name) && artist.equals(song.artist);
+	}
 	
 	public boolean equalsPt2(Object o) {
-        if(o == null) {
-             return false;
-        }
-        
-        if(this == o) {
-             return true;
-        }
-        
-        if(getClass() != o.getClass()) {
-            return false;
-        }
-        
-        Song song = (Song)o;
-        return (album.equals(song.album) && year.equals(song.year));
-    }
+		if(o == null) {
+	         return false;
+	    }
+		
+		if(this == o) {
+	         return true;
+	    }
+		
+		if(getClass() != o.getClass()) {
+			return false;
+		}
+		
+		Song song = (Song)o;
+		return album.equals(song.album) && year.equals(song.year);
+	}
 		
 	public void edit(String name, String artist, String album, String year) {
 		this.artist = artist;
