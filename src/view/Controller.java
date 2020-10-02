@@ -193,6 +193,7 @@ public class Controller extends ActionEvent {
 		Song newSong = new Song(song, artist, album, year);
 		replaceDetails(songList, newSong);
 	}
+
 	
 	public void deleteButtonAction(ActionEvent event) {
 		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
