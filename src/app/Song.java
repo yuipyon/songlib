@@ -54,6 +54,23 @@ public class Song {
 		Song song = (Song)o;
 		return name.equals(song.name) && artist.equals(song.artist);
 	}
+	
+	public boolean equalsPt2(Object o) {
+		if(o == null) {
+	         return false;
+	    }
+		
+		if(this == o) {
+	         return true;
+	    }
+		
+		if(getClass() != o.getClass()) {
+			return false;
+		}
+		
+		Song song = (Song)o;
+		return album.equals(song.album) && year.equals(song.year);
+	}
 		
 	public void edit(String name, String artist, String album, String year) {
 		this.artist = artist;
@@ -63,6 +80,6 @@ public class Song {
 	}
 	
 	public String toString() {
-		return artist + " " + "-" + " " + name;
+		return name + " " + "-" + " " + artist;
 	}
 }
