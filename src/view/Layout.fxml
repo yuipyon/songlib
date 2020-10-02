@@ -11,14 +11,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="432.0" prefWidth="641.0" style="-fx-background-color: #e9f6fd;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="424.0" prefWidth="641.0" style="-fx-background-color: #e9f6fd;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller">
 	
    <children>
       <ListView fx:id="songPlayList" layoutX="27.0" layoutY="32.0" prefHeight="339.0" prefWidth="281.0" AnchorPane.topAnchor="32.0" />
-      <Button fx:id="delete_button" layoutX="100.0" layoutY="389.0" mnemonicParsing="false" onAction="#deleteButtonAction" text="Delete Selected Song" />
-      <Text layoutX="443.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Options" textAlignment="CENTER">
+      <Button fx:id="add_button" layoutX="357.0" layoutY="309.0" mnemonicParsing="false" onAction="#addButtonAction" text="Add Song" />
+      <Button fx:id="delete_button" layoutX="33.0" layoutY="385.0" mnemonicParsing="false" onAction="#deleteButtonAction" text="Delete Selected Song" />
+      <Text layoutX="418.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a New Song" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
@@ -28,15 +28,15 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Separator layoutX="335.0" layoutY="249.0" prefHeight="0.0" prefWidth="274.0" />
-      <VBox layoutX="463.0" layoutY="280.0" prefHeight="95.0" prefWidth="155.0" spacing="6.0">
+      <Separator layoutX="333.0" layoutY="202.0" prefHeight="19.0" prefWidth="274.0" />
+      <VBox layoutX="452.0" layoutY="258.0" prefHeight="95.0" prefWidth="155.0" spacing="6.0">
          <children>
             <TextField fx:id="SongBox" promptText="Song title">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </TextField>
-            <TextField fx:id="artistBox" promptText="Artist" />
+            <TextField fx:id="ArtistBox" promptText="Artist" />
             <TextField fx:id="AlbumBox" promptText="Album" />
             <TextField fx:id="YearBox" prefHeight="25.0" prefWidth="169.0" promptText="Year" />
          </children>
@@ -44,16 +44,22 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <VBox layoutX="357.0" layoutY="306.0" prefHeight="90.0" prefWidth="90.0" spacing="10.0">
+      <VBox layoutX="452.0" layoutY="53.0" prefHeight="95.0" prefWidth="155.0" spacing="6.0">
          <children>
-            <Button fx:id="add_button" mnemonicParsing="false" onAction="#addButtonAction" text="Add Song" />
-            <Button fx:id="edit_button" mnemonicParsing="false" text="Edit Song" onAction="#editButtonAction"/>
+            <TextField fx:id="SDSongBox" promptText="Song title">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="SDArtistBox" promptText="Artist" />
+            <TextField fx:id="SDAlbumBox" promptText="Album" />
+            <TextField fx:id="SDYearBox" prefHeight="25.0" prefWidth="169.0" promptText="Year" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <TextFlow fx:id="SongDetails" layoutX="359.0" layoutY="50.0" prefHeight="151.0" prefWidth="226.0" style="-fx-background-color: #d8eaf4;" />
-      <Button fx:id="select" layoutX="429.0" layoutY="208.0" mnemonicParsing="false" text="Select Song" onAction="#selectButtonAction"/>
+      <Button fx:id="select" layoutX="177.0" layoutY="385.0" mnemonicParsing="false" onAction="#selectButtonAction" text="View Song Details" />
+      <Button fx:id="edit_button" layoutX="354.0" layoutY="111.0" mnemonicParsing="false" onAction="#editButtonAction" prefHeight="25.0" prefWidth="76.0" text="Edit Song" />
    </children>
 </AnchorPane>

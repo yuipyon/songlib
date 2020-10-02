@@ -9,6 +9,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -61,13 +66,17 @@ public class Controller extends ActionEvent {
 	 */
 	@FXML ListView songPlayList;
 	@FXML Button edit;
-	@FXML Button add;
-	@FXML Button delete;
-	@FXML TextField artistBox;
+	@FXML Button add_button;
+	@FXML Button delete_button;
+	@FXML TextField ArtistBox;
 	@FXML TextField SongBox;
 	@FXML TextField YearBox;
 	@FXML TextField AlbumBox;
-	@FXML TextFlow SongDetails;
+	@FXML TextField SDArtistBox;
+	@FXML TextField SDSongBox;
+	@FXML TextField SDYearBox;
+	@FXML TextField SDAlbumBox;
+	
 	
 	/*
 	 * 1. ObservableList to add items to ListView which will take a 
@@ -78,8 +87,8 @@ public class Controller extends ActionEvent {
 	private ObservableList<Song> songs = FXCollections.observableArrayList();
 	private ArrayList<Song> songList = new ArrayList<Song>();
 	
-	private void addAction() {
-		String artist = artistBox.getText();
+	public void addButtonAction(ActionEvent event) {
+		String artist = ArtistBox.getText();
 		String song = SongBox.getText();
 		String album = AlbumBox.getText();
 		String year = YearBox.getText();
@@ -109,15 +118,6 @@ public class Controller extends ActionEvent {
 			songPlayList.setItems(songs);
 			songPlayList.getSelectionModel().select(position);
 		}
-		
-		artistBox.setText("");
-		SongBox.setText("");
-		AlbumBox.setText("");
-		YearBox.setText("");
-	}
-	
-	public void addButtonAction(ActionEvent event) {
-		addAction();
 	}
 	
 	private boolean checkElements(ArrayList<Song> songs, Song item) {
@@ -153,7 +153,7 @@ public class Controller extends ActionEvent {
 		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Song song = (Song) songPlayList.getSelectionModel().getSelectedItem();
-			artistBox.setText(song.getArtist());
+			ArtistBox.setText(song.getArtist());
 			SongBox.setText(song.getName());
 			AlbumBox.setText(song.getAlbum());
 			YearBox.setText(song.getYear());
@@ -182,22 +182,32 @@ public class Controller extends ActionEvent {
 		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Song song = (Song) songPlayList.getSelectionModel().getSelectedItem();
-			Text details = new Text("Details for" + " " + song.getName() + ":" + "\n");
-			SongDetails.getChildren().add(details);
-			Text songName = new Text("Song Name: " + song.getName() + "\n");
-			SongDetails.getChildren().add(songName);
-			Text artist = new Text("Artist Name: " + song.getArtist() + "\n");
-			SongDetails.getChildren().add(artist);
-			Text album = new Text("Album Name: " + song.getAlbum() + "\n");
-			SongDetails.getChildren().add(album);
-			Text year = new Text("Year: " + song.getYear() + "\n");
-			SongDetails.getChildren().add(year);
+			SDArtistBox.setText(song.getArtist());
+			SDSongBox.setText(song.getName());
+			SDAlbumBox.setText(song.getAlbum());
+			SDYearBox.setText(song.getYear());
 		}
 	}
 	
 	public void start(Stage primaryStage) {
-		//here, we should read saved song list text file, load it into songList, and display it in songPlayList
-		//don't need to alphabetically sort here because text file should ideally already be sorted (went through sorting process in add/edit method)
+		try {
+			File file = new File("user_data/user_data.txt");
+			Scanner scan = new Scanner(file);
+			while (scan.hasNextLine()) {
+				String name = "";
+				String artist = "";
+				String album = "";
+				String year = "";
+				Song loadSong = new Song(name, artist, album, year);
+				loadSong.setName(scan.nextLine());
+				loadSong.setArtist(scan.nextLine());
+				loadSong.setAlbum(scan.nextLine());
+				loadSong.setYear(scan.nextLine());
+				songList.add(loadSong);
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("No existing library found, starting fresh!");
+		}
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
@@ -208,23 +218,23 @@ public class Controller extends ActionEvent {
 		SongDetails.getChildren().add(text1);
 		*/
 		
+		//random comment for checking git thing - delete if u see this
 		primaryStage.setOnCloseRequest(event -> {
-
-		    System.out.println("Saved your library");
-
-		    //System.out.println("Stage is closing");
-
 		    try {
 				FileWriter wr = new FileWriter("user_data/user_data.txt");
-				for(Song song: songList) {
-					wr.write(song.toString() + "\n");
+				for (Song song: songList) {
+					wr.write(song.getName() + "\n");
+					wr.write(song.getArtist() + "\n");
+					wr.write(song.getAlbum() + "\n");
+					wr.write(song.getYear() + "\n");
 				}
+			    System.out.println("Saved your library");
 				wr.flush();
 				wr.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		    
 		});
 	}			
 }
+

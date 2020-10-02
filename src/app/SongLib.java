@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import view.Controller;
 
 public class SongLib extends Application {
 
@@ -22,7 +21,7 @@ public class SongLib extends Application {
 		controller.start(primaryStage);
 		
 		primaryStage.setTitle("Song Library");
-		primaryStage.setScene(new Scene(root, 650, 500));
+		primaryStage.setScene(new Scene(root, 621, 424));
 		primaryStage.setResizable(false);
 		primaryStage.show();
 		
@@ -35,3 +34,4 @@ public class SongLib extends Application {
 	}
 
 }
+
