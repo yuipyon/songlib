@@ -44,7 +44,6 @@ import javafx.stage.Stage;
 
 public class Controller extends ActionEvent {
 	
-	
 	/*
 	 * The Comparator implementation was meant so we can compare the objects while using
 	 * the Collections.sort() method
@@ -111,6 +110,13 @@ public class Controller extends ActionEvent {
 			alert.setHeaderText("No input for song and/or artist");
 			alert.setContentText("Please provide at least a song and artist name.");
 			alert.showAndWait();
+		} 
+		else if(!year.matches("^[0-9]{4}$")) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Duplicate Entry");
+			alert.setHeaderText("That is not a year");
+			alert.setContentText("Please input the correct format for year");
+			alert.showAndWait();
 		}
 		else if(exists == true) {
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -144,6 +150,11 @@ public class Controller extends ActionEvent {
 	/*
 	 * Below are some helper methods utilized in the addButtonAction
 	 */
+	
+	public static boolean isBlank(String s)
+	{
+	    return (s == null) || (s.trim().length() == 0);
+	}
 	
 	/* The checkElements Method purpose is to find a duplicate song and return true if found and return false if there isn't a duplicate song. */
 	private boolean checkElements(ArrayList<Song> songs, Song item) {
@@ -185,6 +196,20 @@ public class Controller extends ActionEvent {
         String song = SDSongBox.getText();
         String album = SDAlbumBox.getText();
         String year = SDYearBox.getText();
+        if(artist.isBlank() || song.isBlank()) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Invalid Input");
+			alert.setHeaderText("No input for song and/or artist");
+			alert.setContentText("Please provide at least a song and artist name.");
+			alert.showAndWait();
+		}
+        if(!year.matches("^[0-9]{4}$")) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Duplicate Entry");
+			alert.setHeaderText("That is not a year");
+			alert.setContentText("Please input the correct format for year");
+			alert.showAndWait();
+		}
         Song newSong = new Song(song, artist, album, year);
 		if(newSong.getName().isBlank() || newSong.getArtist().isBlank()) {
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -325,6 +350,15 @@ public class Controller extends ActionEvent {
 			SDYearBox.setText(song.getYear());
 		}
 	}
+	
+	private void showSongDetails(Stage mainstage) {
+		Song selected = (Song) songPlayList.getSelectionModel().getSelectedItem();
+		SDArtistBox.setText(selected.getArtist());
+		SDSongBox.setText(selected.getName());
+		SDAlbumBox.setText(selected.getAlbum());
+		SDYearBox.setText(selected.getYear());
+		
+	}
 
 	/*
 	 * -----------------------------------------------------------------
@@ -355,6 +389,10 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
+		//songPlayList
+		//.getSelectionModel()
+		//.selectedIndexProperty()
+		//.addListener(obs, oldVal,newVal) -> showSongDetails(primaryStage);
 
 		primaryStage.setOnCloseRequest(event -> {
 		    try {
