@@ -1,9 +1,13 @@
 /*
- * Authors: Yulin Ni (yn140) and Karun Kanda (kk951)
+ * @author: Yulin Ni (yn140) 
+ * @author: Karun Kanda (kk951)
+ * @version: 1.0
  */
+
 package view;
 
 import javafx.event.ActionEvent;
+
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,6 +36,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -42,6 +48,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+
+/*
+ * ------------------------------------------------------------------------------------------------
+ * 
+ * Controller Class
+ * 
+ * Description: Object that holds all the methods that the GUI utilizes to make the GUI interactive.
+ * 
+ * -------------------------------------------------------------------------------------------------
+ */
 
 public class Controller extends ActionEvent {
 	
@@ -54,10 +70,10 @@ public class Controller extends ActionEvent {
 	{  
 	    public int compare(Song a, Song b) 
 	    { 
-	        if (a.getArtist().compareToIgnoreCase(b.getArtist()) == 0) {
+	        if (a.getName().compareToIgnoreCase(b.getName()) == 0) {
 	        	return a.getArtist().compareToIgnoreCase(b.getArtist());
 	        }
-	    	return a.getArtist().compareToIgnoreCase(b.getArtist()); 
+	    	return a.getName().compareToIgnoreCase(b.getName()); 
 	    } 
 	} 
 	  
@@ -88,8 +104,15 @@ public class Controller extends ActionEvent {
 	 */
 	private ObservableList<Song> songs = FXCollections.observableArrayList();
 	private ArrayList<Song> songList = new ArrayList<Song>();
-	Song temp; //placeholder value
+	ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
 	
+	/*
+	 * ---------------------------
+	 * addButtonAction Method
+	 * 
+	 * Adds a song to the playlist
+	 * ----------------------------
+	 */
 	public void addButtonAction(ActionEvent event) {
 		String artist = ArtistBox.getText();
 		String song = SongBox.getText();
@@ -114,29 +137,38 @@ public class Controller extends ActionEvent {
 			alert.showAndWait();
 		}
 		else {
-			songList.add(new_song);
-			Collections.sort(songList, new sortSongName());
-			int position = findIndex(songList, new_song);
-			songs = FXCollections.observableList(songList);
-			songPlayList.setItems(songs);
-			songPlayList.getSelectionModel().select(position);
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to add " + new_song.getName() + " by " + new_song.getArtist() + " to your library?", yes, ButtonType.CANCEL);
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == yes) {
+				songList.add(new_song);
+				Collections.sort(songList, new sortSongName());
+				int position = findIndex(songList, new_song);
+				songs = FXCollections.observableList(songList);
+				songPlayList.setItems(songs);
+				songPlayList.getSelectionModel().select(position);
+			}
 		}
-		
 		ArtistBox.setText("");
 		SongBox.setText("");
 		AlbumBox.setText("");
 		YearBox.setText("");
 	}
 	
+	/*
+	 * Below are some helper methods utilized in the addButtonAction
+	 */
+	
+	/* The checkElements Method purpose is to find a duplicate song and return true if found and return false if there isn't a duplicate song. */
 	private boolean checkElements(ArrayList<Song> songs, Song item) {
 		for(int i = 0; i<songs.size(); i++) {
-			if(item.equals(songs.get(i))) {
+			if((item.getArtist().compareToIgnoreCase(songs.get(i).getArtist()) == 0) && (item.getName().compareToIgnoreCase(songs.get(i).getName()) == 0)) {
 				return true;
 			} 
 		}
 		return false;
 	}
 	
+	/* The findIndex Method returns the index position where the item and a song in the arraylist match according to there name. */
 	private int findIndex(ArrayList<Song> songs, Song item) {
 		int position = 0;
 		for(int i = 0; i<songs.size(); i++) {
@@ -148,41 +180,13 @@ public class Controller extends ActionEvent {
 		return position;
 	}
 	
-	private boolean findDuplicate(ArrayList<Song> songs, Song item) {
-		boolean position = false;
-		for(int i = 0; i<songs.size(); i++) {
-			if((item.getArtist().compareToIgnoreCase(songs.get(i).getArtist()) == 0) && (item.getName().compareToIgnoreCase(songs.get(i).getName()) == 0)){
-				position = true;
-				return position;
-			} 
-		}
-		return position;
-	}
-	
-	private void replaceDetails(ArrayList<Song> songs1, Song item) {
-		for(int i = 0; i<songs1.size(); i++) {
-			if((item.getArtist().compareToIgnoreCase(songs.get(i).getArtist()) == 0) || (item.getName().compareToIgnoreCase(songs.get(i).getName()) == 0)){
-				songList.remove(songs1.get(i));
-				boolean dup = findDuplicate(songList, item);
-				if(dup == true) {
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Duplicate Entry");
-					alert.setHeaderText("This song already exists in your library");
-					alert.setContentText("Please input another song");
-					alert.showAndWait();
-					break;
-				} else {
-					songList.add(item);
-					Collections.sort(songList, new sortSongName());
-					songs = FXCollections.observableList(songList);
-					songPlayList.setItems(songs);
-					break;
-				}
-			} 
-			break;
-		}
-	}
-	
+	/*
+	 * --------------------------------------------------
+	 * editButtonAction Method
+	 * 
+	 * Edits the details of selected song in the playlist
+	 * --------------------------------------------------
+	 */
 	public void editButtonAction(ActionEvent event) {
 		String artist = SDArtistBox.getText();
 		String song = SDSongBox.getText();
@@ -190,24 +194,96 @@ public class Controller extends ActionEvent {
 		String year = SDYearBox.getText();
 		Song newSong = new Song(song, artist, album, year);
 		replaceDetails(songList, newSong);
+		SDArtistBox.setText("");
+		SDSongBox.setText("");
+		SDAlbumBox.setText("");
+		SDYearBox.setText("");
 	}
 	
+	/*
+	 * Below are some helper methods utilized in the editButtonAction
+	 */
+		
+     /* The replaceDetails method is to find the song that you need to replace, delete that individual song and replace it with the new detail that the user chooses to insert.*/
+		private void replaceDetails(ArrayList<Song> songs1, Song item) {
+			for(int i = 0; i<songs1.size(); i++) {
+				if((item.getArtist().compareToIgnoreCase(songs1.get(i).getArtist()) == 0) || (item.getName().compareToIgnoreCase(songs1.get(i).getName()) == 0)){
+					songList = deleteEntry(songList, (Song) songPlayList.getSelectionModel().getSelectedItem());
+					boolean dup = findDuplicate(songList, item);
+					if(dup == true) {
+						Alert alert = new Alert(AlertType.INFORMATION);
+						alert.setTitle("Duplicate Entry");
+						alert.setHeaderText("This song already exists in your library");
+						alert.setContentText("Please input another song");
+						alert.showAndWait();
+						break;
+					} else {
+						songList.add(item);
+						Collections.sort(songList, new sortSongName());
+						songs = FXCollections.observableList(songList);
+						songPlayList.setItems(songs);
+						break;
+					}
+				} 
+				
+			}
+		}
+		
+		private ArrayList<Song> deleteEntry(ArrayList<Song> songs, Song item) {
+			// if song matches the selected on then delete it
+			for(int i = 0; i<songs.size(); i++) {
+				if(songs.get(i).equals(item)){
+					songs.remove(i);
+					break;
+				} 
+			}
+			return songs;
+		}
+		
+	 /* The findDuplicate Method purpose is to find a duplicate song and return true if found and return false if there isn't a duplicate song. */
+		private boolean findDuplicate(ArrayList<Song> songs, Song item) {
+			boolean position = false;
+			for(int i = 0; i<songs.size(); i++) {
+				if((item.getArtist().compareToIgnoreCase(songs.get(i).getArtist()) == 0) && (item.getName().compareToIgnoreCase(songs.get(i).getName()) == 0)){
+					position = true;
+					return position;
+				} 
+			}
+			return position;
+		}
+	
+	/*
+	 * ---------------------------
+	 * deleteButtonAction Method
+	 * 
+	 * Deletes the selected song from the playlist
+	 * ----------------------------
+	 */
 	public void deleteButtonAction(ActionEvent event) {
 		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Song songToRemove = (Song) songPlayList.getSelectionModel().getSelectedItem();
-			int newSelectedIndex = 
-				(selectedIndex == songPlayList.getItems().size() - 1)
-					? selectedIndex - 1
-					: selectedIndex;
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to remove " + songToRemove.getName() + " by " + songToRemove.getArtist() + " from your library?", yes, ButtonType.CANCEL);
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == yes) {
+				int newSelectedIndex = 
+						(selectedIndex == songPlayList.getItems().size() - 1)
+							? selectedIndex - 1
+							: selectedIndex;
 
-			//removes song from songs arraylist
-			songs.remove(selectedIndex);		
-			//selects the next song in the list
-			songPlayList.getSelectionModel().select(newSelectedIndex);
+					songs.remove(selectedIndex);		
+					songPlayList.getSelectionModel().select(newSelectedIndex);
+			}
 		}
 	}
 	
+	/*
+	 * ----------------------------------------
+	 * selectButtonAction Method
+	 * 
+	 * Display the details of the selected song
+	 * ----------------------------------------
+	 */
 	public void selectButtonAction(ActionEvent event) {
 		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
@@ -215,10 +291,17 @@ public class Controller extends ActionEvent {
 			SDArtistBox.setText(song.getArtist());
 			SDSongBox.setText(song.getName());
 			SDAlbumBox.setText(song.getAlbum());
-			SDYearBox.setText(song.getYear());  
+			SDYearBox.setText(song.getYear());
 		}
 	}
-	
+
+	/*
+	 * -----------------------------------------------------------------
+	 * Start Method
+	 * 
+	 * Initiates starting features that will occur when the GUI boots up
+	 * ------------------------------------------------------------------
+	 */
 	public void start(Stage primaryStage) {
 		try {
 			File file = new File("user_data/user_data.txt");
@@ -241,14 +324,7 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
-				
-		/*
-		Text text1 = new Text("Something");
-		Text text2 = new Text("Something Else");
-		SongDetails.getChildren().add(text1);
-		*/
-		
-		//random comment for checking git thing - delete if u see this
+
 		primaryStage.setOnCloseRequest(event -> {
 		    try {
 				FileWriter wr = new FileWriter("user_data/user_data.txt");

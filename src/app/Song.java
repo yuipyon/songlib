@@ -1,9 +1,23 @@
 /*
- * Authors: Yulin Ni (yn140) and Karun Kanda (kk951)
+ * @author: Yulin Ni (yn140) 
+ * @author: Karun Kanda (kk951)
+ * @version: 1.0
  */
+
 package app;
 
+/*
+ * ----------------------------------------------------------------------------
+ * 
+ * Song Class
+ * 
+ * Description: Object that contains the individual data of the song the user wants to store.
+ * 
+ * ----------------------------------------------------------------------------
+ */
+
 public class Song {
+	
 	String name, artist, album, year;
 	
 	public Song(String name, String artist, String album, String year) {

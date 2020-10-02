@@ -1,9 +1,13 @@
 /*
- * Authors: Yulin Ni (yn140) and Karun Kanda (kk951)
+ * @author: Yulin Ni (yn140) 
+ * @author: Karun Kanda (kk951)
+ * @version: 1.0
  */
+
 package app;
 
 import view.Controller;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +15,16 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import view.Controller;
+
+/*
+ * ----------------------------------------------------------------------------
+ * 
+ * Songlib Class
+ * 
+ * Description: Object that starts the GUI.
+ * 
+ * ----------------------------------------------------------------------------
+ */
 
 public class SongLib extends Application {
 
