@@ -265,17 +265,6 @@ public class Controller extends ActionEvent {
 			}
 			return position;
 		}
-		
-		private boolean findDuplicatePt2(ArrayList<Song> songs, Song item) {
-            boolean position = false;
-            for(int i = 0; i<songs.size(); i++) {
-                if(item.equalsPt2(songs.get(i))){
-                        position = true;
-                        return position;
-                } 
-            }
-            return position;
-        }
 	
 	/*
 	 * ---------------------------

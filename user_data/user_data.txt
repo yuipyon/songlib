@@ -1,7 +1,0 @@
-bump of chicken
-
-200
-Acacia
-Hello World
-
-
