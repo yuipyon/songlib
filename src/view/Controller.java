@@ -108,10 +108,10 @@ public class Controller extends ActionEvent {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Invalid Input");
 			alert.setHeaderText("No input for song and/or artist");
-			alert.setContentText("Please provide at least a song and artist name.");
+			alert.setContentText("Please include both the song title and artist name");
 			alert.showAndWait();
 		} 
-		else if(!year.matches("^[0-9]{4}$")) {
+		else if(!year.matches("^[0-9]{4}$") && !year.isBlank()) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Duplicate Entry");
 			alert.setHeaderText("That is not a year");
@@ -178,11 +178,6 @@ public class Controller extends ActionEvent {
 		return position;
 	}
 	
-	public static boolean isBlank(String s)
-	{
-	    return (s == null) || (s.trim().length() == 0);
-	}
-	
 	/*
 	 * --------------------------------------------------
 	 * editButtonAction Method
@@ -196,26 +191,20 @@ public class Controller extends ActionEvent {
         String song = SDSongBox.getText();
         String album = SDAlbumBox.getText();
         String year = SDYearBox.getText();
-        if(artist.isBlank() || song.isBlank()) {
+        
+        Song newSong = new Song(song, artist, album, year);
+        if(newSong.getName().isBlank() || newSong.getArtist().isBlank()) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Invalid Input");
 			alert.setHeaderText("No input for song and/or artist");
-			alert.setContentText("Please provide at least a song and artist name.");
+			alert.setContentText("Please include both the song title and artist name");
 			alert.showAndWait();
 		}
-        if(!year.matches("^[0-9]{4}$")) {
+        else if(!year.matches("^[0-9]{4}$") && !year.isBlank()) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Duplicate Entry");
 			alert.setHeaderText("That is not a year");
 			alert.setContentText("Please input the correct format for year");
-			alert.showAndWait();
-		}
-        Song newSong = new Song(song, artist, album, year);
-		if(newSong.getName().isBlank() || newSong.getArtist().isBlank()) {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Error");
-			alert.setHeaderText("Invalid action");
-			alert.setContentText("Please include either the song title or artist name");
 			alert.showAndWait();
 		}
 		else {
@@ -350,15 +339,6 @@ public class Controller extends ActionEvent {
 			SDYearBox.setText(song.getYear());
 		}
 	}
-	
-	private void showSongDetails(Stage mainstage) {
-		Song selected = (Song) songPlayList.getSelectionModel().getSelectedItem();
-		SDArtistBox.setText(selected.getArtist());
-		SDSongBox.setText(selected.getName());
-		SDAlbumBox.setText(selected.getAlbum());
-		SDYearBox.setText(selected.getYear());
-		
-	}
 
 	/*
 	 * -----------------------------------------------------------------
@@ -389,10 +369,6 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
-		//songPlayList
-		//.getSelectionModel()
-		//.selectedIndexProperty()
-		//.addListener(obs, oldVal,newVal) -> showSongDetails(primaryStage);
 
 		primaryStage.setOnCloseRequest(event -> {
 		    try {
