@@ -215,7 +215,7 @@ public class Controller extends ActionEvent {
 			SDArtistBox.setText(song.getArtist());
 			SDSongBox.setText(song.getName());
 			SDAlbumBox.setText(song.getAlbum());
-			SDYearBox.setText(song.getYear());
+			SDYearBox.setText(song.getYear());  
 		}
 	}
 	
