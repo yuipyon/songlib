@@ -54,10 +54,10 @@ public class Controller extends ActionEvent {
 	{  
 	    public int compare(Song a, Song b) 
 	    { 
-	        if (a.getName().compareToIgnoreCase(b.getName()) == 0) {
-	        	return a.getArtist().compareToIgnoreCase(b.getArtist());
+	        if (a.getName().trim().compareToIgnoreCase(b.getName().trim()) == 0) {
+	        	return a.getArtist().trim().compareToIgnoreCase(b.getArtist().trim());
 	        }
-	    	return a.getName().compareToIgnoreCase(b.getName()); 
+	    	return a.getName().trim().compareToIgnoreCase(b.getName().trim()); 
 	    } 
 	} 
 	  
