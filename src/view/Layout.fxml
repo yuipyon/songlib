@@ -23,13 +23,13 @@
    <children>
       <ListView fx:id="songPlayList" layoutX="27.0" layoutY="32.0" prefHeight="339.0" prefWidth="281.0" AnchorPane.topAnchor="32.0" />
       <Button fx:id="add_button" layoutX="357.0" layoutY="309.0" mnemonicParsing="false" onAction="#addButtonAction" text="Add Song" />
-      <Button fx:id="delete_button" layoutX="33.0" layoutY="385.0" mnemonicParsing="false" onAction="#deleteButtonAction" text="Delete Selected Song" />
+      <Button fx:id="delete_button" layoutX="102.0" layoutY="384.0" mnemonicParsing="false" onAction="#deleteButtonAction" text="Delete Selected Song" />
       <Text layoutX="418.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a New Song" textAlignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <Text layoutX="426.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Song Details">
+      <Text layoutX="428.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Song Details">
          <font>
             <Font size="14.0" />
          </font>
@@ -65,8 +65,10 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </VBox>
-      <Button fx:id="select" layoutX="177.0" layoutY="385.0" mnemonicParsing="false" onAction="#selectButtonAction" text="View Song Details" />
       <Button fx:id="edit_button" layoutX="354.0" layoutY="111.0" mnemonicParsing="false" onAction="#editButtonAction" prefHeight="25.0" prefWidth="76.0" text="Edit Song" />
-      <Text layoutX="27.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Song Playlist" textAlignment="CENTER" wrappingWidth="265.583101272583" />
+      <Text layoutX="27.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Library" textAlignment="CENTER" wrappingWidth="281.0">
+         <font>
+            <Font size="14.0" />
+         </font></Text>
    </children>
 </AnchorPane>

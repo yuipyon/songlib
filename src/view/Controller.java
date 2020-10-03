@@ -20,6 +20,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import app.Song;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -139,10 +141,6 @@ public class Controller extends ActionEvent {
 				SongBox.setText("");
 				AlbumBox.setText("");
 				YearBox.setText("");
-				SDArtistBox.setText(new_song.getArtist());
-		        SDSongBox.setText(new_song.getName());
-		        SDAlbumBox.setText(new_song.getAlbum());
-		        SDYearBox.setText(new_song.getYear());
 			}
 		}
 	}
@@ -298,45 +296,17 @@ public class Controller extends ActionEvent {
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to remove " + songToRemove.getName() + " by " + songToRemove.getArtist() + " from your library?", yes, ButtonType.CANCEL);
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == yes) {
-				int newSelectedIndex = 
-						(selectedIndex == songPlayList.getItems().size() - 1)
-							? selectedIndex - 1
-							: selectedIndex;
-
-					songs.remove(selectedIndex);		
-					songPlayList.getSelectionModel().select(newSelectedIndex);
-					Song newDisplay = (Song) songPlayList.getSelectionModel().getSelectedItem();
-					if (selectedIndex != 0) {
-	                    SDArtistBox.setText(newDisplay.getArtist());
-	                    SDSongBox.setText(newDisplay.getName());
-	                    SDAlbumBox.setText(newDisplay.getAlbum());
-	                    SDYearBox.setText(newDisplay.getYear());
-					}
-					else {
-						SDArtistBox.setText("");
-						SDSongBox.setText("");
-						SDAlbumBox.setText("");
-						SDYearBox.setText("");
-					}
+				int newSelectedIndex = (selectedIndex == songPlayList.getItems().size() - 1) ? selectedIndex - 1 : selectedIndex;
+				songs.remove(selectedIndex);		
+				songPlayList.getSelectionModel().select(newSelectedIndex);
+				Song newDisplay = (Song) songPlayList.getSelectionModel().getSelectedItem();
+				if (selectedIndex == 0) {
+					SDArtistBox.setText("");
+					SDSongBox.setText("");
+					SDAlbumBox.setText("");
+					SDYearBox.setText("");
+				}
 			}
-		}
-	}
-	
-	/*
-	 * ----------------------------------------
-	 * selectButtonAction Method
-	 * 
-	 * Display the details of the selected song
-	 * ----------------------------------------
-	 */
-	public void selectButtonAction(ActionEvent event) {
-		int selectedIndex = songPlayList.getSelectionModel().getSelectedIndex();
-		if (selectedIndex != -1) {
-			Song song = (Song) songPlayList.getSelectionModel().getSelectedItem();
-			SDArtistBox.setText(song.getArtist());
-			SDSongBox.setText(song.getName());
-			SDAlbumBox.setText(song.getAlbum());
-			SDYearBox.setText(song.getYear());
 		}
 	}
 
@@ -369,7 +339,19 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
-
+		
+		songPlayList.getSelectionModel().selectedItemProperty().addListener(
+	            new ChangeListener<Song>() {
+	                public void changed(ObservableValue<? extends Song> observedValue, 
+	                    Song prevSelected, Song selected) {
+						if (selected != null) {
+							SDArtistBox.setText(selected.getArtist());
+							SDSongBox.setText(selected.getName());
+							SDAlbumBox.setText(selected.getAlbum());
+							SDYearBox.setText(selected.getYear());
+						}
+	            }
+	        });
 		primaryStage.setOnCloseRequest(event -> {
 		    try {
 				FileWriter wr = new FileWriter("user_data/user_data.txt");
