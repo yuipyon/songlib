@@ -221,9 +221,9 @@ public class Controller extends ActionEvent {
 		
      /* The replaceDetails method is to find the song that you need to replace, delete that individual song and replace it with the new detail that the user chooses to insert.*/
 		private void replaceDetails(ArrayList<Song> songs1, Song item) {
-			boolean dup = findDuplicate(songList, item);
-			if(dup == true) {
-				boolean dupe = findDuplicatePt2(songList, item);
+			ArrayList<Song> matchedSongs = findDuplicate(songList, item);
+			if(!matchedSongs.isEmpty()) {
+				boolean dupe = findDuplicatePt2(matchedSongs, item);
 				if(dupe == true) {
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.setTitle("Duplicate Entry");
@@ -259,15 +259,14 @@ public class Controller extends ActionEvent {
 		}
 		
 	 /* The findDuplicate Method purpose is to find a duplicate song and return true if found and return false if there isn't a duplicate song. */
-		private boolean findDuplicate(ArrayList<Song> songs, Song item) {
-			boolean position = false;
+		private ArrayList<Song> findDuplicate(ArrayList<Song> songs, Song item) {
+			ArrayList<Song> result = new ArrayList<Song>();
 			for(int i = 0; i<songs.size(); i++) {
 				if(item.equals(songs.get(i))){
-						position = true;
-						return position;
+						result.add(songs.get(i));
 				} 
 			}
-			return position;
+			return result;
 		}
 		
 	 /* The findDuplicatePt2 Method purpose is to find a duplicate song and return true if found and return false if there isn't a duplicate song. */
@@ -299,7 +298,6 @@ public class Controller extends ActionEvent {
 				int newSelectedIndex = (selectedIndex == songPlayList.getItems().size() - 1) ? selectedIndex - 1 : selectedIndex;
 				songs.remove(selectedIndex);		
 				songPlayList.getSelectionModel().select(newSelectedIndex);
-				Song newDisplay = (Song) songPlayList.getSelectionModel().getSelectedItem();
 				if (selectedIndex == 0) {
 					SDArtistBox.setText("");
 					SDSongBox.setText("");
@@ -339,6 +337,14 @@ public class Controller extends ActionEvent {
 		songs = FXCollections.observableList(songList);		
 		songPlayList.setItems(songs);
 		songPlayList.getSelectionModel().select(0);
+		int firstSelected = songPlayList.getSelectionModel().getSelectedIndex();
+		if (firstSelected != -1) {
+			Song firstSong = (Song) songPlayList.getSelectionModel().getSelectedItem();
+			SDArtistBox.setText(firstSong.getArtist());
+			SDSongBox.setText(firstSong.getName());
+			SDAlbumBox.setText(firstSong.getAlbum());
+			SDYearBox.setText(firstSong.getYear());
+		}
 		
 		songPlayList.getSelectionModel().selectedItemProperty().addListener(
 	            new ChangeListener<Song>() {
@@ -361,7 +367,7 @@ public class Controller extends ActionEvent {
 					wr.write(song.getAlbum() + "\n");
 					wr.write(song.getYear() + "\n");
 				}
-			    System.out.println("Saved your library");
+			    System.out.println("Saved your library (in the user_data folder)");
 				wr.flush();
 				wr.close();
 			} catch (IOException e) {
